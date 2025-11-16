@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, Github, ShieldAlert } from 'lucide-react'
 
 const ProjectCard = ({ project, onOpen }) => (
   <motion.button
@@ -12,7 +12,9 @@ const ProjectCard = ({ project, onOpen }) => (
     <div className="p-6">
       <div className="flex items-center justify-between">
         <h3 className="text-cyan-100 text-lg font-semibold">{project.title}</h3>
-        <div className="h-6 w-6 rounded-full bg-cyan-400/20 border border-cyan-400/40 group-hover:bg-fuchsia-400/20 group-hover:border-fuchsia-400/40 transition" />
+        {project.badge && (
+          <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-cyan-400/40 text-cyan-200/90 bg-cyan-400/10">{project.badge}</span>
+        )}
       </div>
       <p className="mt-2 text-cyan-100/80">{project.subtitle}</p>
       <div className="mt-4 flex flex-wrap gap-2">
@@ -34,7 +36,12 @@ const Modal = ({ project, onClose }) => (
         <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }}
           className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-gradient-to-br from-black to-[#0a0a1a] p-6">
           <h3 className="text-2xl font-bold text-cyan-100">{project.title}</h3>
-          <p className="mt-2 text-cyan-100/80">{project.description}</p>
+          {project.disclaimer && (
+            <div className="mt-2 text-xs text-amber-300/90 inline-flex items-center gap-1">
+              <ShieldAlert className="w-3 h-3" /> {project.disclaimer}
+            </div>
+          )}
+          <p className="mt-3 text-cyan-100/80">{project.description}</p>
           <div className="mt-4 flex gap-3">
             {project.links?.live && (
               <a href={project.links.live} target="_blank" className="inline-flex items-center gap-2 neon-button">
@@ -57,15 +64,38 @@ const Modal = ({ project, onClose }) => (
 const Projects = () => {
   const [active, setActive] = useState(null)
   const projects = [
-    { title: 'Neon HUD Dashboard', subtitle: 'Interactive data visualizer', tags: ['Three.js', 'WebGL', 'Motion'], description: 'A high-performance HUD-style dashboard with volumetric effects and shader-driven visuals.', links: { live: '#', github: '#' } },
-    { title: 'Cyberpunk Portfolio', subtitle: 'Immersive 3D portfolio', tags: ['Spline', 'GSAP', 'React'], description: 'Animated portfolio with holographic UI and micro-interactions tuned to 60fps.', links: { live: '#', github: '#' } },
-    { title: 'Glitch Shop', subtitle: 'Micro-animations e-commerce', tags: ['React', 'Framer', 'UX'], description: 'Storefront focused on motion heuristics, fluid transitions, and snappy feedback.', links: { live: '#', github: '#' } },
+    {
+      title: 'Cookies Checker — Automated Business',
+      subtitle: 'Telegram bot for cookie validation and session management',
+      badge: 'Business',
+      tags: ['Python', 'Telethon', 'Requests', 'Scraping', 'GraphQL'],
+      description:
+        'A production Telegram automation that validates cookies, mimics browser behavior, manages sessions, and parses multi-endpoint flows. Powers a small cookie-checking business with resilient retries and analytics hooks.',
+      links: { live: 'https://cookieschecker.site' },
+    },
+    {
+      title: 'SPU Brute Forcer — Educational Tool',
+      subtitle: 'Demonstrates auth weaknesses with response-aware logic',
+      disclaimer: 'For educational and ethical use only',
+      tags: ['Python', 'httpx', 'async', 'Requests'],
+      description:
+        'Custom brute forcing utility built to teach security principles and highlight rate-limits, lockouts, and error-handling patterns. Includes AI-assisted UI and structured logging.',
+      links: { github: 'https://github.com/celestialsbeings' },
+    },
+    {
+      title: 'Science Day — NAAC Footfall Counter',
+      subtitle: 'Real-time people counter with Wi‑Fi ready design',
+      tags: ['ESP8266', 'Ultrasonic', 'LCD I2C', 'EEPROM', 'C++'],
+      description:
+        'Sensor-driven system counting lab visitors for NAAC reporting. Features auto-reset, local logging, and accurate distance filtering; deployed and used by the college.',
+    },
   ]
 
   return (
     <section id="projects" className="py-24 bg-gradient-to-b from-black to-[#050512]">
       <div className="mx-auto max-w-6xl px-6">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center text-3xl sm:text-4xl font-bold text-cyan-100">Projects</motion.h2>
+        <p className="mt-3 text-center text-cyan-100/70 max-w-2xl mx-auto">Hover a project to see quick details. Click to open a holographic sheet with stack and links.</p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {projects.map(p => (
             <ProjectCard key={p.title} project={p} onOpen={setActive} />

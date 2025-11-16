@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Cpu, Code2, MonitorSmartphone, Zap } from 'lucide-react'
+import { Terminal, Server, Network, Database, Wrench, GitBranch, Shield, Cpu } from 'lucide-react'
 
 const ring = (value, color) => {
   const dash = 283
@@ -24,7 +24,7 @@ const ring = (value, color) => {
   )
 }
 
-const Skill = ({ icon: Icon, label, value }) => (
+const Skill = ({ icon: Icon, label, value, note }) => (
   <div className="group rounded-xl p-6 border border-white/10 bg-white/5 backdrop-blur hover:border-cyan-400/40 transition">
     <div className="flex items-center gap-4">
       <div className="relative">
@@ -36,7 +36,7 @@ const Skill = ({ icon: Icon, label, value }) => (
           <Icon className="w-5 h-5 text-cyan-300 group-hover:text-fuchsia-300 transition" />
           <h4 className="text-cyan-100 font-medium">{label}</h4>
         </div>
-        <p className="mt-1 text-sm text-cyan-100/70">Hover to energize</p>
+        {note && <p className="mt-1 text-xs text-cyan-100/70">{note}</p>}
       </div>
     </div>
   </div>
@@ -44,20 +44,34 @@ const Skill = ({ icon: Icon, label, value }) => (
 
 const Skills = () => {
   const skills = [
-    { icon: Cpu, label: 'Three.js/WebGL', value: 85 },
-    { icon: Code2, label: 'TypeScript/React', value: 90 },
-    { icon: MonitorSmartphone, label: 'Responsive UX', value: 88 },
-    { icon: Zap, label: 'Performance/GSAP', value: 82 },
+    { icon: Terminal, label: 'Python', value: 92, note: 'Primary language' },
+    { icon: Server, label: 'Backend / Flask', value: 85, note: 'APIs, auth, sessions' },
+    { icon: Network, label: 'Web Scraping & Automation', value: 90, note: 'HTTP, requests, Telethon' },
+    { icon: Database, label: 'MySQL & Data', value: 78, note: 'Schema, queries, tuning' },
+    { icon: Cpu, label: 'Linux Servers', value: 80, note: 'Process handling, services' },
+    { icon: GitBranch, label: 'Git & Codebase', value: 82, note: 'Versioning, reviews' },
+    { icon: Shield, label: 'REST & Security', value: 76, note: 'Headers, cookies, sessions' },
+    { icon: Wrench, label: 'PHP (server-side)', value: 70, note: 'Legacy systems' },
   ]
 
   return (
     <section id="skills" className="py-24 bg-black">
       <div className="mx-auto max-w-6xl px-6">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center text-3xl sm:text-4xl font-bold text-cyan-100">Skills</motion.h2>
+        <p className="mt-3 text-center text-cyan-100/70 max-w-2xl mx-auto">Hover a chip to energize. These values indicate relative comfort and focus areas for backend, automation, and API work.</p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skills.map((s) => (
             <Skill key={s.label} {...s} />
           ))}
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 text-cyan-100/80">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Problem solving</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Independent work</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Tracking & automation mindset</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Coding</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Chess</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">Learning Rust (basic)</div>
         </div>
       </div>
     </section>
